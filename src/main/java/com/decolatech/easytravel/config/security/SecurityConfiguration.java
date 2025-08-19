@@ -42,12 +42,22 @@ public class SecurityConfiguration {
         return httpSecurity
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
-//                    corsConfiguration.setAllowedOrigins(java.util.List.of("http://localhost:4200"));
-                    corsConfiguration.setAllowedOriginPatterns(java.util.List.of("*")); // Permite qualquer origem
+                    // Configuração específica para Azure App Service e desenvolvimento
+                    corsConfiguration.setAllowedOrigins(java.util.List.of(
+                        "https://back-et.azurewebsites.net",
+                        "http://localhost:4200",
+                        "http://localhost:3000"
+                    ));
+                    // Adiciona patterns para maior flexibilidade
+                    corsConfiguration.setAllowedOriginPatterns(java.util.List.of(
+                        "https://*.azurewebsites.net",
+                        "http://localhost:*",
+                        "https://localhost:*"
+                    ));
                     corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
                     corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
                     corsConfiguration.setAllowCredentials(true);
-                    corsConfiguration.setExposedHeaders(java.util.List.of("Authorization"));
+                    corsConfiguration.setExposedHeaders(java.util.List.of("Authorization", "Content-Type"));
                     corsConfiguration.setMaxAge(3600L);
                     return corsConfiguration;
                 }))
