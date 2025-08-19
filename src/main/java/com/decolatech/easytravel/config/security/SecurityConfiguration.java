@@ -42,17 +42,13 @@ public class SecurityConfiguration {
         return httpSecurity
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
-                    // Configuração específica para Azure App Service e desenvolvimento
+                    // Para Azure App Service, usar apenas origens específicas sem patterns quando allowCredentials=true
                     corsConfiguration.setAllowedOrigins(java.util.List.of(
                         "https://back-et.azurewebsites.net",
                         "http://localhost:4200",
-                        "http://localhost:3000"
-                    ));
-                    // Adiciona patterns para maior flexibilidade
-                    corsConfiguration.setAllowedOriginPatterns(java.util.List.of(
-                        "https://*.azurewebsites.net",
-                        "http://localhost:*",
-                        "https://localhost:*"
+                        "http://localhost:3000",
+                        "http://localhost:8080",
+                        "https://localhost:8080"
                     ));
                     corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
                     corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
@@ -64,7 +60,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/swagger-ui/index.html", "/api-docs", "/api-docs/**", "/swagger-resources/**", "/webjars/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/register/client").permitAll()
                         .requestMatchers("/auth/register/admin").permitAll()
