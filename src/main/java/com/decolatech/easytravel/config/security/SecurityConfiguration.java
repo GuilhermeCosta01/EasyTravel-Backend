@@ -60,7 +60,10 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/swagger-ui/index.html", "/api-docs", "/api-docs/**", "/swagger-resources/**", "/webjars/**", "/v3/api-docs/**").permitAll()
+                        // Swagger UI - Permitir todos os recursos necessários
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/swagger-ui/index.html", "/api-docs", "/api-docs/**", "/swagger-resources/**", "/webjars/**", "/v3/api-docs/**", "/v3/api-docs/swagger-config").permitAll()
+                        // Health checks e actuator
+                        .requestMatchers("/actuator/**", "/health", "/info").permitAll()
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/register/client").permitAll()
                         .requestMatchers("/auth/register/admin").permitAll()
