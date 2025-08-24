@@ -42,9 +42,10 @@ public class SecurityConfiguration {
         return httpSecurity
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
-                    // Para Azure App Service, usar apenas origens específicas sem patterns quando allowCredentials=true
+                    // Para Azure App Service, incluindo frontend e backend
                     corsConfiguration.setAllowedOrigins(java.util.List.of(
                         "https://back-et.azurewebsites.net",
+                        "https://easy-travel.azurewebsites.net",
                         "http://localhost:4200",
                         "http://localhost:3000",
                         "http://localhost:8080",
